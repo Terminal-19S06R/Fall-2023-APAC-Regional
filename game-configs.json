@@ -3,7 +3,7 @@
   "seasonCompatibilityModeP2": 5,
   "debug":{
     "printMapString":false,
-    "printTStrings":false,
+    "printTStrings":true,
     "printActStrings":false,
     "printHitStrings":false,
     "printPlayerInputStrings":false,
