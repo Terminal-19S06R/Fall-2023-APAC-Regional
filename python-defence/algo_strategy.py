@@ -75,7 +75,7 @@ class AlgoStrategy(gamelib.AlgoCore):
 
         self.rebuild_defences(game_state)
         sp = game_state.get_resources(0)[0]
-        if game_state.turn_number > 4 and :
+        if game_state.turn_number > 4:
             sp = self.build_defences_corner_layer2(game_state, sp)
             sp = self.build_defences_corner_layer1(game_state, sp)
         sp = self.check_defences(game_state, sp)
