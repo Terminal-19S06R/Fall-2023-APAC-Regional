@@ -1,0 +1,24 @@
+Random seed: 1124084327498774509
+---------------- Starting Your Algo --------------------
+Configuring your custom algo strategy...
+Performing turn 0 of your custom algo strategy
+Got scored on at: [13, 0]
+All locations: [[13, 0]]
+Got scored on at: [13, 0]
+All locations: [[13, 0], [13, 0]]
+Performing turn 1 of your custom algo strategy
+Got scored on at: [13, 0]
+All locations: [[13, 0], [13, 0], [13, 0]]
+Got scored on at: [13, 0]
+All locations: [[13, 0], [13, 0], [13, 0], [13, 0]]
+Performing turn 2 of your custom algo strategy
+Traceback (most recent call last):
+  File "/Users/Immanuel/NUS/TerminalOne/Fall-2023-APAC-Regional/simple-test/algo_strategy.py", line 116, in <module>
+    algo.start()
+  File "/Users/Immanuel/NUS/TerminalOne/Fall-2023-APAC-Regional/simple-test/gamelib/algocore.py", line 74, in start
+    self.on_turn(game_state_string)
+  File "/Users/Immanuel/NUS/TerminalOne/Fall-2023-APAC-Regional/simple-test/algo_strategy.py", line 59, in on_turn
+    self.starter_strategy(game_state)
+  File "/Users/Immanuel/NUS/TerminalOne/Fall-2023-APAC-Regional/simple-test/algo_strategy.py", line 78, in starter_strategy
+    raise Exception("This is a test exception")
+Exception: This is a test exception
