@@ -49,6 +49,7 @@ class AlgoStrategy(gamelib.AlgoCore):
         self.STAGGER_LEFT = [[20,6],[19,5]]
         self.STAGGER_RIGHT = [[7,6],[8,5]]
 
+
     def on_turn(self, turn_state):
         """
         This function is called every turn with the game state wrapper as
@@ -62,17 +63,9 @@ class AlgoStrategy(gamelib.AlgoCore):
         game_state.suppress_warnings(True)  #Comment or remove this line to enable warnings.
 
         self.starter_strategy(game_state)
-
         game_state.submit_turn()
-
-
-    """
-    NOTE: All the methods after this point are part of the sample starter-algo
-    strategy and can safely be replaced for your custom algo.
-    """
  
-    def starter_strategy(self, game_state):
-
+    def starter_strategy(self, game_state): 
         self.rebuild_defences(game_state)
         sp = game_state.get_resources(0)[0]
         if game_state.turn_number > 4:
@@ -88,11 +81,6 @@ class AlgoStrategy(gamelib.AlgoCore):
         sp = self.build_corner_upgrade2(game_state, sp)
         sp = self.build_support(game_state, sp)
         sp = self.build_more_support(game_state, sp)
-        trap_location = []
-        if RIGHT == "attack":
-            trap_location += [[13,0],]
-        if LEFT == "attack":
-            trap_location += [[14,0],]
     """
     DEFENCE
     """
@@ -100,11 +88,25 @@ class AlgoStrategy(gamelib.AlgoCore):
         remaining = []
         if len(self.REBUILT) > 0:
             for wall in self.REBUILT:
-                value = game_state.attempt_spawn(WALL, wall)
-                if not value:
-                    remaining.append(wall)
+                if (self.past_atk_name):
+                    if (self.past_direction == "left" and wall == [7,7]) or (self.past_direction == "right"  and wall == [20,7]):
+                        remaining.append(wall)
+                        continue
+                    elif (self.past_atk_name == "cannon" and self.past_direction == "left" and wall == [1,12]):
+                        remaining.append(wall)
+                        continue
+                    elif (self.past_atk_name == "cannon" and self.past_direction == "right" and wall == [26,12]):
+                        remaining.append(wall)
+                        continue
+                    else:
+                        value = game_state.attempt_spawn(wall, wall)
+                        if not value:
+                            remaining.append(wall)
+                else:
+                    value = game_state.attempt_spawn(wall, wall)
+                    if not value:
+                        remaining.append(wall)
         self.REBUILT = remaining
-            
     
     def check_defences(self, game_state, sp):
         plus5 = sp + 5
@@ -121,37 +123,45 @@ class AlgoStrategy(gamelib.AlgoCore):
         return min(plus5, sp)
 
     def build_defences_corner_layer1(self, game_state, sp):
-        # Useful tool for setting up your base locations: https://www.kevinbai.design/terminal-map-maker
-        # More community tools available at: https://terminal.c1games.com/rules#Download
         wall_locations = [[ 0, 13],[ 27, 13],[ 1, 12],[ 26, 12],[ 2, 11],[ 25, 11],]
         for wall in wall_locations:
-            if sp > 0:
-                if game_state.attempt_spawn(WALL, wall):
-                    sp -= 1
+            if (self.past_atk_name):
+                if (self.past_atk_name == "cannon" and self.past_direction == "left" and wall == [1,12]):
+                    continue
+                elif (self.past_atk_name == "cannon" and self.past_direction == "right" and wall == [26,12]):
+                    continue
+                else:
+                    if sp > 0:
+                        if game_state.attempt_spawn(WALL, wall):
+                            sp -= 1
+            else:
+                if sp > 0:
+                    if game_state.attempt_spawn(WALL, wall):
+                        sp -= 1
         return sp
 
     def build_defences_corner_layer2(self, game_state, sp):
         wall_locations = [[24, 10],[ 4, 9],[ 23, 9],[ 5, 8],[ 22, 8],[ 6, 7],[ 21, 7],[3,10]]
         for wall in wall_locations:
             if sp > 0:
-                if game_state.attempt_spawn(WALL, wall):
-                    sp -= 1
+                    if game_state.attempt_spawn(WALL, wall):
+                        sp -= 1
         return sp
             
     def build_reactive_middle(self, game_state, sp):
         main_turret = [[ 5, 11],[ 22, 11]]
         main_turret_wall = [[ 5, 12],[ 22, 12]]
         wall_locations = [[ 6, 10],[ 21, 10],[ 7, 9],[ 20, 9],[ 8, 8],[ 9, 8],[ 10, 8],[ 11, 8],[ 12, 8],[ 13, 8],[ 14, 8],[ 15, 8],[ 16, 8],[ 17, 8],[ 18, 8],[ 19, 8]]
-        trap_right = [7,7]
-        trap_left = [20, 7]        
-        if RIGHT == "defend":
+        trap_right = [20,7]
+        trap_left = [7, 7]        
+        if (self.past_direction != "left"):
             if sp >0:
-                value = game_state.attempt_spawn(WALL, trap_right)
+                value = game_state.attempt_spawn(WALL, trap_left)
                 if value:
                     sp-=1
-        if LEFT == "defend":
+        if (self.past_direction != "right"):
             if sp>0:
-                value = game_state.attempt_spawn(WALL, trap_left)
+                value = game_state.attempt_spawn(WALL, trap_right)
                 if value:
                     sp-=1
         for turret in main_turret:
@@ -232,30 +242,6 @@ class AlgoStrategy(gamelib.AlgoCore):
         return sp
 
 
-    """
-    ATTACK
-    """
-    def heuristic():
-        return False
-        return True
-    
-
-    def calculate_future(self, game_state):
-        most_efficient = []
-        # api call
-        for x iterate:
-        if heuristic():
-            #removewalls
-            set attack;
-            #attack
-        else:
-            #buildwalls
-            setdefend;
-
-    def calculate_current(self, game_state):
-        most_efficient = []
-        #api call
-        for x iterate:
         
 
     def on_action_frame(self, turn_string):
